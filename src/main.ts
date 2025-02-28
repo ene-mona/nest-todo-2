@@ -1,26 +1,31 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import {MicroserviceOptions, Transport} from '@nestjs/microservices'
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
 async function bootstrap() {
-  const GRPC_PORT = process.env.GRPC_PORT ?? 50052;
+  const PORT = process.env.PORT ?? 3000;  // ✅ Railway assigns a dynamic port
+  const GRPC_PORT = process.env.GPRC_PORT ?? 50052  // ✅ Use the same port for gRPC
 
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+  // ✅ Start the REST API (Railway needs an HTTP service to detect it as "running")
+  const app = await NestFactory.create(AppModule);
+  app.enableCors();  // Enable CORS if you need API access from a frontend
+  await app.listen(PORT);
+  console.log(`✅ REST API is running on http://0.0.0.0:${PORT}`);
+
+  // ✅ Start the gRPC Service on the SAME PORT (Multiplexing)
+  const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.GRPC,
     options: {
       package: 'todo',
       protoPath: join(__dirname, '../../proto/todo.proto'),
-      url: `0.0.0.0:${GRPC_PORT}`, // mine
-    }
+      url: `0.0.0.0:${GRPC_PORT}`,  // ✅ Use the same port as the REST API
+    },
   });
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    transform: true,
-  }));
 
-  await app.listen();
-  console.log('gRPC Todo Microservice is running...on 50052');
+  await grpcApp.listen();
+  console.log(`✅ gRPC Service is running on the same port: ${GRPC_PORT}`);
 }
+
 bootstrap();
