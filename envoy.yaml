@@ -41,7 +41,7 @@ static_resources:
                   address:
                     socket_address:
                       address: 127.0.0.1
-                      port_value: 50051  # Your gRPC Server
+                      port_value: 50052  # Your gRPC Server
       http2_protocol_options: {}  # Required for gRPC
 
     - name: colleague_grpc_backend
@@ -54,6 +54,6 @@ static_resources:
               - endpoint:
                   address:
                     socket_address:
-                      address: colleague-app.internal
+                      address: nest-grpc-s9ah.onrender.com
                       port_value: 8080  # Forward calls to colleague's HTTP
       http2_protocol_options: {}
