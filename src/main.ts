@@ -5,22 +5,20 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
 async function bootstrap() {
-  const PORT = process.env.PORT ?? 3000;  // ✅ Railway assigns a dynamic port
-  const GRPC_PORT = process.env.GPRC_PORT ?? 50052  // ✅ Use the same port for gRPC
+  const PORT = process.env.PORT ?? 3000;  
+  const GRPC_PORT = process.env.GPRC_PORT ?? 50052  
 
-  // ✅ Start the REST API (Railway needs an HTTP service to detect it as "running")
   const app = await NestFactory.create(AppModule);
-  app.enableCors();  // Enable CORS if you need API access from a frontend
+  app.enableCors(); 
   await app.listen(PORT);
   console.log(`✅ REST API is running on http://0.0.0.0:${PORT}`);
 
-  // ✅ Start the gRPC Service on the SAME PORT (Multiplexing)
   const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.GRPC,
     options: {
       package: 'todo',
       protoPath: join(__dirname, '../../proto/todo.proto'),
-      url: `0.0.0.0:${GRPC_PORT}`,  // ✅ Use the same port as the REST API
+      url: `0.0.0.0:${GRPC_PORT}`,  
     },
   });
 
