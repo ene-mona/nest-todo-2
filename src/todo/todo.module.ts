@@ -17,12 +17,6 @@ import { join } from 'path';
           protoPath: join(__dirname, '../../../proto/todo.proto'),
           url: 'localhost:50051', // CHANGE THIS TO YOUR COLLEAGUE'S SERVER
            //url:'dns:///nest-grpc-production-caaf.up.railway.app:50051',
-          // credentials: credentials.createSsl(),
-          credentials: require('@grpc/grpc-js').credentials.createSsl(),
-          channelOptions: {
-            'grpc.max_receive_message_length': 1024 * 1024 * 100, // 100MB
-            'grpc.keepalive_time_ms': 120000, // 2 minutes
-          },
         },
       },
     ]),
