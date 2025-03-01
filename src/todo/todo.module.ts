@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { credentials } from '@grpc/grpc-js';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { join } from 'path';
           package: 'todo',
           protoPath: join(__dirname, '../../../proto/todo.proto'),
           //url: 'localhost:50051', // CHANGE THIS TO YOUR COLLEAGUE'S SERVER
-          url:'nest-grpc-production-caaf.up.railway.app/:50051'
+          url:'nest-grpc-production-caaf.up.railway.app/:50051',
+          credentials: credentials.createSsl(),
         },
       },
     ]),
