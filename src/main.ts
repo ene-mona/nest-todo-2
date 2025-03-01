@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
@@ -18,7 +17,7 @@ async function bootstrap() {
     options: {
       package: 'todo',
       protoPath: join(__dirname, '../../proto/todo.proto'),
-      url: `0.0.0.0:${GRPC_PORT}`,  
+       url: `0.0.0.0:${GRPC_PORT}`,  
     },
   });
 

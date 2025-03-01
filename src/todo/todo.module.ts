@@ -15,7 +15,7 @@ import { join } from 'path';
         options: {
           package: 'todo',
           protoPath: join(__dirname, '../../../proto/todo.proto'),
-          url: 'nest-grpc-s9ah.onrender.com:8080', // CHANGE THIS TO YOUR COLLEAGUE'S SERVER
+          url: 'localhost:50051', // CHANGE THIS TO YOUR COLLEAGUE'S SERVER
         },
       },
     ]),
