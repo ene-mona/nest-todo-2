@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { credentials } from '@grpc/grpc-js';
 
 @Module({
   imports: [
@@ -17,8 +16,13 @@ import { credentials } from '@grpc/grpc-js';
           package: 'todo',
           protoPath: join(__dirname, '../../../proto/todo.proto'),
           //url: 'localhost:50051', // CHANGE THIS TO YOUR COLLEAGUE'S SERVER
-           url:'0:0:0:0:50051',
+           url:'dns:///nest-grpc-production-caaf.up.railway.app:50051',
           // credentials: credentials.createSsl(),
+          credentials: require('@grpc/grpc-js').credentials.createSsl(),
+          channelOptions: {
+            'grpc.max_receive_message_length': 1024 * 1024 * 100, // 100MB
+            'grpc.keepalive_time_ms': 120000, // 2 minutes
+          },
         },
       },
     ]),
