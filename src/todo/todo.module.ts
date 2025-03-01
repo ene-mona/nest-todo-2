@@ -15,8 +15,8 @@ import { join } from 'path';
         options: {
           package: 'todo',
           protoPath: join(__dirname, '../../../proto/todo.proto'),
-          //url: 'localhost:50051', // CHANGE THIS TO YOUR COLLEAGUE'S SERVER
-           url:'dns:///nest-grpc-production-caaf.up.railway.app:50051',
+          url: 'localhost:50051', // CHANGE THIS TO YOUR COLLEAGUE'S SERVER
+           //url:'dns:///nest-grpc-production-caaf.up.railway.app:50051',
           // credentials: credentials.createSsl(),
           credentials: require('@grpc/grpc-js').credentials.createSsl(),
           channelOptions: {
