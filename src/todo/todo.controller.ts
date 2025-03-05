@@ -51,6 +51,7 @@ export class TodoController implements TodoServiceController{
     @GrpcMethod('TodoService', 'GetRemoteTodos')
     async getRemoteTodos(_: Empty): Promise<{ todos: ProtoTodo[] }> {
         const todos = await this.todoService.getRemoteTodos();
+        
         return { todos: todos.todos.map((todo: Todo): ProtoTodo => ({ id: todo.id.toString(), title: todo.title, completed: todo.completed })) };
     }
 
